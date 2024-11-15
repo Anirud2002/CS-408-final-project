@@ -1,0 +1,13 @@
+.bookcards {
+    display: flex;
+    flex-wrap: wrap; /* Allow BookCards to wrap to the next line */
+    gap: 16px; /* Space between each BookCard */
+    justify-content: space-evenly; /* Center BookCards in the container */
+    padding: 16px;
+  }
+  
+  .bookcards > * {
+    flex: 1 1 400px; /* Minimum width of each BookCard */
+    max-width: 500px; /* Optional max-width for each BookCard */
+    box-sizing: border-box;
+  } 
