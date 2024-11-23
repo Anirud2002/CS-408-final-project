@@ -1,4 +1,5 @@
 import {
+  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
@@ -6,10 +7,12 @@ import {
   IonCol,
   IonGrid,
   IonIcon,
+  IonItem,
   IonRow,
 } from "@ionic/react";
 import "./BookCard.css";
-import { star } from "ionicons/icons";
+import { star, pencil } from "ionicons/icons";
+import { Link } from "react-router-dom";
 
 const BookCard: React.FC = () => {
   return (
@@ -37,15 +40,22 @@ const BookCard: React.FC = () => {
                 </p>
                 <p style={{ marginTop: 10 }}>$ 14.99</p>
 
-                <div className="review-stars" style={{ marginTop: 10 }}>
-                  <IonIcon icon={star} />
-                  <IonIcon icon={star} />
-                  <IonIcon icon={star} />
-                </div>
+                <Link to="/review">
+                  <div className="review-stars" style={{ marginTop: 10 }}>
+                    <IonIcon icon={star} />
+                    <IonIcon icon={star} />
+                    <IonIcon icon={star} />
+                  </div>
+                </Link>
               </div>
             </IonCol>
           </IonRow>
         </IonGrid>
+        <IonItem lines="none">
+          <IonButton color="dark" slot="end" routerLink="/edit">
+            <IonIcon icon={pencil}></IonIcon>
+          </IonButton>
+        </IonItem>
       </IonCardContent>
     </IonCard>
   );
