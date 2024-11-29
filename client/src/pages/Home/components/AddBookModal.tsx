@@ -9,19 +9,58 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  useIonToast,
 } from "@ionic/react";
+import axios from "axios";
 import { useRef } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const AddBookModal = ({
   dismiss,
 }: {
   dismiss: (data?: string | null | undefined | number, role?: string) => void;
 }) => {
+  const apiUrl: string =
+    "https://prikl74ph0.execute-api.us-east-2.amazonaws.com";
+  const [present] = useIonToast();
+
+  const showDangerToast = (
+    position: "top" | "middle" | "bottom",
+    message: string
+  ) => {
+    present({
+      message,
+      duration: 1500,
+      position: position,
+      color: "danger",
+    });
+  };
+
   const titleRef = useRef<HTMLIonInputElement>(null);
   const imageUrlRef = useRef<HTMLIonInputElement>(null);
   const descriptionRef = useRef<HTMLIonInputElement>(null);
 
-  const handleAdd = () => {};
+  const handleAdd = async () => {
+    const title = titleRef.current?.value;
+    const imageUrl = imageUrlRef.current?.value;
+    const description = descriptionRef.current?.value;
+
+    if (!title || !description || !imageUrl) {
+      showDangerToast("top", "Fill out all the fields!");
+      return;
+    }
+
+    const payload = {
+      bookId: uuidv4(),
+      title,
+      imageUrl,
+      description,
+    };
+
+    const response = await axios.put(`${apiUrl}/book`, payload);
+    console.log(response);
+  };
+
   return (
     <IonPage>
       <IonHeader>
