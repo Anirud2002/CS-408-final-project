@@ -18,21 +18,22 @@ import { v4 as uuidv4 } from "uuid";
 const AddBookModal = ({
   dismiss,
 }: {
-  dismiss: (data?: string | null | undefined | number, role?: string) => void;
+  dismiss: (data?: boolean | null | undefined, role?: string) => void;
 }) => {
   const apiUrl: string =
     "https://prikl74ph0.execute-api.us-east-2.amazonaws.com";
   const [present] = useIonToast();
 
-  const showDangerToast = (
+  const showToast = (
     position: "top" | "middle" | "bottom",
-    message: string
+    message: string,
+    color: "success" | "danger" | "warning" | "dark" | "light"
   ) => {
     present({
       message,
       duration: 1500,
       position: position,
-      color: "danger",
+      color,
     });
   };
 
@@ -46,7 +47,7 @@ const AddBookModal = ({
     const description = descriptionRef.current?.value;
 
     if (!title || !description || !imageUrl) {
-      showDangerToast("top", "Fill out all the fields!");
+      showToast("top", "Fill out all the fields!", "danger");
       return;
     }
 
@@ -55,10 +56,18 @@ const AddBookModal = ({
       title,
       imageUrl,
       description,
+      // reviews can be added later
     };
 
-    const response = await axios.put(`${apiUrl}/book`, payload);
-    console.log(response);
+    await axios
+      .put(`${apiUrl}/book`, payload)
+      .then((_) => {
+        dismiss(true);
+        showToast("top", "New book added!", "success");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -78,8 +87,8 @@ const AddBookModal = ({
           <IonInput
             ref={titleRef}
             labelPlacement="stacked"
-            label="Review description"
-            placeholder="This book was great!"
+            label="Book Title"
+            placeholder="The Alchemist"
             required={true}
           />
         </IonItem>

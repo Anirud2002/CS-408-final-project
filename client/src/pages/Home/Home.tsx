@@ -1,11 +1,9 @@
 import {
   IonButton,
   IonContent,
-  IonGrid,
   IonHeader,
   IonIcon,
   IonPage,
-  IonRow,
   IonTitle,
   IonToolbar,
   useIonModal,
@@ -14,18 +12,50 @@ import "./Home.css";
 import BookCard from "./components/BookCard";
 import { add } from "ionicons/icons";
 import AddBookModal from "./components/AddBookModal";
+import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+export interface Book {
+  bookId: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  reviews: [string];
+}
 
 const Home: React.FC = () => {
+  const apiUrl: string =
+    "https://prikl74ph0.execute-api.us-east-2.amazonaws.com";
   const [present, dismiss] = useIonModal(AddBookModal, {
-    dismiss: (data: string, role: string) => dismiss(data, role),
+    dismiss: (data: boolean, role: string) => dismiss(data, role),
   });
+
+  const [books, setBooks] = useState<Book[]>([]);
+  const [shouldFetchBook, setShouldFetchBook] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      return await axios
+        .get(`${apiUrl}/books`)
+        .then((res) => {
+          setBooks(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    fetchBooks();
+  }, [shouldFetchBook]);
 
   function openModal() {
     present({
-      // onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
-      //   if (ev.detail.role === 'confirm') {
-      //   }
-      // },
+      onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
+        if (ev.detail.data) {
+          setShouldFetchBook(true);
+        }
+      },
     });
   }
 
@@ -48,12 +78,9 @@ const Home: React.FC = () => {
         </IonHeader>
 
         <div className="bookcards">
-          <BookCard />
-          <BookCard />
-          <BookCard />
-          <BookCard />
-          <BookCard />
-          <BookCard />
+          {books.map((book) => (
+            <BookCard key={book.bookId} book={book} />
+          ))}
         </div>
       </IonContent>
     </IonPage>
