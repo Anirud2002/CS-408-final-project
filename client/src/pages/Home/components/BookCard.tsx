@@ -36,7 +36,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
             <IonCol size="12" sizeMd="7">
               <div className="book-details">
                 <p>{book.description}</p>
-                <p style={{ marginTop: 10 }}>$ 14.99</p>
+                <p style={{ marginTop: 10 }}>$ {book.price}</p>
 
                 <Link to="/review">
                   <div className="review-stars" style={{ marginTop: 10 }}>
@@ -50,7 +50,11 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
           </IonRow>
         </IonGrid>
         <IonItem lines="none">
-          <IonButton color="dark" slot="end" routerLink="/edit">
+          <IonButton
+            color="dark"
+            slot="end"
+            routerLink={`/edit/${book.bookId}`}
+          >
             <IonIcon icon={pencil}></IonIcon>
           </IonButton>
         </IonItem>

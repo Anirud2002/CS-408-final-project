@@ -14,21 +14,45 @@ import {
 } from "@ionic/react";
 import "./Edit.css";
 import { star } from "ionicons/icons";
+import { useEffect, useState } from "react";
+import { Book } from "../Home/Home";
+import axios from "axios";
+import { useParams } from "react-router";
 
 const Edit: React.FC = () => {
+  const apiUrl: string =
+    "https://prikl74ph0.execute-api.us-east-2.amazonaws.com";
+
+  const [book, setBook] = useState<Book>();
+  // Extract the bookId parameter from the URL
+  const { bookId } = useParams<{ bookId: string }>();
+  useEffect(() => {
+    const fetchBook = async () => {
+      return await axios
+        .get(`${apiUrl}/book/${bookId}`)
+        .then((res) => {
+          setBook(res.data);
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    fetchBook();
+  }, []);
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Edit - Harry Potter: Sorcerer Stone</IonTitle>
+          <IonTitle>Edit - {book?.title}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="ion-padding">
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">
-              Edit - Harry Potter: Sorcerer Stone
-            </IonTitle>
+            <IonTitle size="large">Edit - {book?.title}</IonTitle>
           </IonToolbar>
         </IonHeader>
 
@@ -37,15 +61,15 @@ const Edit: React.FC = () => {
             <IonCol size="12" sizeMd="4">
               <img
                 className="edit-img"
-                src="https://imgs.search.brave.com/35-bdzEbQSRYcarOmq3FFgnFqimgrYofj2QhrZ1GiiQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tYXJr/ZXRwbGFjZS5jYW52/YS5jb20vRUFEYXBN/NDJJQk0vMi8wLzEw/MDN3L2NhbnZhLXJl/ZC1waG90by1zY2ll/bmNlLWZpY3Rpb24t/Ym9vay1jb3Zlci1C/TVhSWkhGMlZxay5q/cGc"
-                alt="book cover picture"
+                src={book?.imageUrl}
+                alt={book?.title}
               />
             </IonCol>
 
             <IonCol size="12" sizeMd="8">
               <div className="book-details">
                 <IonInput
-                  value={"Harry Potter: Sorcerer Stone"}
+                  value={book?.title}
                   label="Title"
                   labelPlacement="floating"
                 ></IonInput>
@@ -53,13 +77,11 @@ const Edit: React.FC = () => {
                 <IonTextarea
                   label="Description"
                   labelPlacement="floating"
-                  value={
-                    "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Namdelectus deserunt corporis natus, id perferendis non quiassumenda nesciunt illo."
-                  }
+                  value={book?.description}
                 ></IonTextarea>
 
                 <IonInput
-                  value={"14.99"}
+                  value={book?.price}
                   label="Price ($)"
                   labelPlacement="floating"
                 ></IonInput>

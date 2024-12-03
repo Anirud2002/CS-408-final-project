@@ -40,13 +40,15 @@ const AddBookModal = ({
   const titleRef = useRef<HTMLIonInputElement>(null);
   const imageUrlRef = useRef<HTMLIonInputElement>(null);
   const descriptionRef = useRef<HTMLIonInputElement>(null);
+  const priceRef = useRef<HTMLIonInputElement>(null);
 
   const handleAdd = async () => {
     const title = titleRef.current?.value;
     const imageUrl = imageUrlRef.current?.value;
     const description = descriptionRef.current?.value;
+    const price = priceRef.current?.value;
 
-    if (!title || !description || !imageUrl) {
+    if (!title || !description || !imageUrl || !price) {
       showToast("top", "Fill out all the fields!", "danger");
       return;
     }
@@ -56,6 +58,7 @@ const AddBookModal = ({
       title,
       imageUrl,
       description,
+      price,
       // reviews can be added later
     };
 
@@ -107,6 +110,15 @@ const AddBookModal = ({
             labelPlacement="stacked"
             label="Book description"
             placeholder="This book about a boy and girl who fell in love!"
+            required={true}
+          />
+        </IonItem>
+        <IonItem>
+          <IonInput
+            ref={priceRef}
+            labelPlacement="stacked"
+            label="Price"
+            placeholder="9.99"
             required={true}
           />
         </IonItem>

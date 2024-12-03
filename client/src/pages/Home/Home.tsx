@@ -21,7 +21,13 @@ export interface Book {
   title: string;
   description: string;
   imageUrl: string;
+  price: number;
   reviews: [string];
+}
+
+export interface BookReview {
+  stars: number;
+  reviewComments: [string];
 }
 
 const Home: React.FC = () => {
@@ -39,6 +45,7 @@ const Home: React.FC = () => {
       return await axios
         .get(`${apiUrl}/books`)
         .then((res) => {
+          console.log(res.data);
           setBooks(res.data);
         })
         .catch((err) => {

@@ -47,7 +47,7 @@ const App: React.FC = () => (
         <Route exact path="/">
           <Redirect to="/home" />
         </Route>
-        <Route path="/edit">
+        <Route path="/edit/:bookId">
           <Edit />
         </Route>
         <Route path="/review">
