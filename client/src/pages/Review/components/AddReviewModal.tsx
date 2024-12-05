@@ -81,7 +81,7 @@ const AddReviewModal = ({
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="end">
-            <IonButton color="medium" onClick={() => dismiss(null, "cancel")}>
+            <IonButton color="medium" onClick={() => dismiss(false, "cancel")}>
               Cancel
             </IonButton>
           </IonButtons>
