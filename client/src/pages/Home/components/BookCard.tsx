@@ -38,7 +38,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
                 <p>{book.description}</p>
                 <p style={{ marginTop: 10 }}>$ {book.price}</p>
 
-                <Link to="/review">
+                <Link to={`/review/${book.bookId}`}>
                   <div className="review-stars" style={{ marginTop: 10 }}>
                     <IonIcon icon={star} />
                     <IonIcon icon={star} />

@@ -50,7 +50,7 @@ const App: React.FC = () => (
         <Route path="/edit/:bookId">
           <Edit />
         </Route>
-        <Route path="/review">
+        <Route path="/review/:bookId">
           <Review />
         </Route>
       </IonRouterOutlet>

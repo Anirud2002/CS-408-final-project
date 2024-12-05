@@ -22,12 +22,12 @@ export interface Book {
   description: string;
   imageUrl: string;
   price: number;
-  reviews: [string];
+  reviews: BookReview[];
 }
 
 export interface BookReview {
   stars: number;
-  reviewComments: [string];
+  reviewComment: string;
 }
 
 const Home: React.FC = () => {
